@@ -1,0 +1,109 @@
+# Format checks enforced on CI:
+# 1. Comments must appear above each field.
+# 2. There must be a blank line between each field.
+# 3. Inline comments (after a field on the same line) are not allowed.
+# 4. Indentation level is respected for nested fields.
+
+_target_: verl.workers.config.HFModelConfig
+
+# path to the huggingface model
+path: ~/models/deepseek-llm-7b-chat
+
+# config to the huggingface config. In case it is not the same as path
+hf_config_path: null
+
+# path to the huggingface tokenizer. In case it is not the same as path
+tokenizer_path: null
+
+# whether to use shared memory for model loading
+use_shm: False
+
+# whether to trust remote code.
+trust_remote_code: False
+
+# custom chat template for the model
+custom_chat_template: null
+
+# whether to use external libs for the model
+external_lib: null
+
+# override hf config
+override_config: {}
+
+# whether to enable gradient checkpointing. Only valid when we use hf model definition
+enable_gradient_checkpointing: True
+
+# Whether to enable con_lm_head
+enable_con_lm_head: false
+
+# linear or mlp, hidden_size -> [hidden_size] -> con_lm_head_output_size
+con_lm_head_type: linear
+
+# Output size of con_lm_head, default to 512
+con_lm_head_output_size: 512
+
+# Loss function for con_lm_head: soft_nn_loss, supcon_loss_in, supcon_loss_out, infonce_loss
+con_lm_head_loss_type: infonce_loss
+con_lm_head_distance_measure: cosine_distance
+
+# -1 do not mask, 0 mask incorrect labels, 1 mask correct labels
+con_lm_head_masked_label: 0
+# sim temperature, logit = sim / temperature
+con_lm_head_temperature: 0.05
+
+# optimizer params
+con_lm_head_lr: 0.001
+con_lm_head_weight_decay: 0.01
+
+# contrastive_reward = contant_reward - lambda * loss
+con_lm_head_contant_reward: 0
+con_lm_head_lambda: 0.2
+
+# path to load and save contrastive head
+con_lm_head_load_path: null
+con_lm_head_save_path: null
+
+# whether to fix contrastive head
+con_lm_head_fixed_head: false
+
+# whether to skip the trivial samples (all positive or all negative)
+con_lm_head_skip_trivial: true
+
+# contrastive level: batch_level, group_level
+con_lm_head_contrastive_level: group_level
+
+# debias method: layer_norm, mean_subtract
+con_lm_head_debias: null
+
+# whether to enable activation offload. Only valid when we use hf model definition
+enable_activation_offload: False
+
+# whether to use remove padding. Only valid when we use hf model definition
+use_remove_padding: False
+
+# Set to positive value to enable LoRA (e.g., 32)
+lora_rank: 0
+
+# LoRA scaling factor
+lora_alpha: 16
+
+# Target modules for LoRA adaptation
+target_modules: all-linear
+
+# Exclude modules from LoRA adaptation
+exclude_modules: null
+
+# Path to pre-trained LoRA adapter to load for continued training
+lora_adapter_path: null
+
+# whether to use liger. Only valid when we use hf model definition
+use_liger: False
+
+# whether to use fused kernels.
+use_fused_kernels: False
+
+# fused kernel options.
+fused_kernel_options:
+
+  # the implementation backend for fused kernels.
+  impl_backend: torch
